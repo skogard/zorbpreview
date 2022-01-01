@@ -1,0 +1,51 @@
+<html>
+<head>
+<style>
+body {
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+img {
+  width: 300px;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.0-rc.0/web3.min.js"></script>
+<script>
+const web3 = new Web3(window.ethereum)
+const address = "0xCa21d4228cDCc68D4e23807E5e370C07577Dd152"
+document.addEventListener("DOMContentLoaded", async () => {
+  let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+  const contract = new web3.eth.Contract([{
+    "inputs": [{
+      "internalType": "address",
+      "name": "user",
+      "type": "address"
+    }],
+    "name": "zorbForAddress",
+    "outputs": [{
+      "internalType": "string",
+      "name": "",
+      "type": "string"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+  }], address)
+  let z = await contract.methods.zorbForAddress(accounts[0]).call()
+  document.querySelector("img").setAttribute("src", z)
+  document.querySelector("h2").innerHTML = accounts[0]
+})
+</script>
+</head>
+<body>
+<div>
+  <img>
+  <h2></h2>
+</div>
+</body>
+</html>
